@@ -22,6 +22,11 @@ public class CharacterController : MonoBehaviour
     [SerializeField]
     private float speed;
 
+    [Header("OTHER")]
+    [Header("Roll")]
+    [SerializeField]
+    private float rollForce;
+
     [Header("Camera")]
     [SerializeField]
     private Transform followTarget;
@@ -29,8 +34,9 @@ public class CharacterController : MonoBehaviour
     private float lookSpeed;
 
     private PlayerInput playerInput;
-
+    private bool isRolling = false;
     private Rigidbody rb;
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -40,16 +46,19 @@ public class CharacterController : MonoBehaviour
 
     void Update()
     {
-        Vector2 leftStickInput = playerInput.actions["Move"].ReadValue<Vector2>();
-        Vector3 movement = ((transform.forward * leftStickInput.y) + (transform.right * leftStickInput.x)) * speed;
-        rb.linearVelocity = new Vector3(movement.x, rb.linearVelocity.y, movement.z);
+        if (!isRolling)
+        {
+            Vector2 leftStickInput = playerInput.actions["Move"].ReadValue<Vector2>();
+            Vector3 movement = ((transform.forward * leftStickInput.y) + (transform.right * leftStickInput.x)) * speed;
+            rb.linearVelocity = new Vector3(movement.x, rb.linearVelocity.y, movement.z); //<-------se necesita un booleano para que esto no se efectue si estas haciendo un roll
+        }
     }
 
     private void LateUpdate()
     {
         Vector2 lookInput = playerInput.actions["Look"].ReadValue<Vector2>();
         followTarget.localEulerAngles += new Vector3(lookInput.y * lookSpeed * Time.deltaTime, 0, 0);
-        transform.eulerAngles += new Vector3(0, lookInput.x * lookSpeed * Time.deltaTime, 0);
+        transform.eulerAngles += new Vector3(0, lookInput.x * lookSpeed * Time.deltaTime, 0); // <----------- ESTO SE PONE CUANDO EL JUGADOR SE MUEVA, PARA QUE LA CAMARA NO LO GIRE
     }
 
     //- - - - - - COMANDOS DE STATS - - - - - -
@@ -60,13 +69,16 @@ public class CharacterController : MonoBehaviour
         switch (_stat)
         {
             case "life":
-                if (life - _quantity >= minLife)
+                if (!isRolling)
                 {
-                    life -= _quantity;
-                }
-                else
-                {
-                    life = minLife;
+                    if (life - _quantity >= minLife)
+                    {
+                        life -= _quantity;
+                    }
+                    else
+                    {
+                        life = minLife;
+                    }
                 }
                 break;
             case "speed":
@@ -126,5 +138,20 @@ public class CharacterController : MonoBehaviour
         {
             Debug.Log("L");
         }
+    }
+
+    //- - - - - - ROLL - - - - - -
+    public void Roll(InputAction.CallbackContext callback)
+    {
+        if (callback.phase == InputActionPhase.Started)
+        {
+            isRolling = true; 
+            rb.AddForce(transform.forward * rollForce);
+        }
+    }
+
+    public void MoveAgainEvent()
+    {
+        isRolling = false;
     }
 }
