@@ -392,6 +392,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 00c15d92-faaf-4a7e-bdb7-e57272546e5f
     m_ActionName: 'PlayerActions/HeavyAttack[/Mouse/rightButton]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 110431232}
+        m_TargetAssemblyTypeName: CharacterController, Assembly-CSharp
+        m_MethodName: Roll
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: d12b886a-e23c-47b0-905d-694191d2c7ff
+    m_ActionName: 'PlayerActions/Roll[/Keyboard/space]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerActions
@@ -465,6 +481,7 @@ MonoBehaviour:
   maxSpeed: 13
   minSpeed: 4
   speed: 7.5
+  rollForce: 100
   followTarget: {fileID: 1255880498}
   lookSpeed: 7.5
 --- !u!1 &577042592

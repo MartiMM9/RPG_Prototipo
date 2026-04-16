@@ -22,6 +22,11 @@ public class CharacterController : MonoBehaviour
     [SerializeField]
     private float speed;
 
+    [Header("OTHER")]
+    [Header("Roll")]
+    [SerializeField]
+    private float rollForce;
+
     [Header("Camera")]
     [SerializeField]
     private Transform followTarget;
@@ -42,14 +47,14 @@ public class CharacterController : MonoBehaviour
     {
         Vector2 leftStickInput = playerInput.actions["Move"].ReadValue<Vector2>();
         Vector3 movement = ((transform.forward * leftStickInput.y) + (transform.right * leftStickInput.x)) * speed;
-        rb.linearVelocity = new Vector3(movement.x, rb.linearVelocity.y, movement.z);
+        //rb.linearVelocity = new Vector3(movement.x, rb.linearVelocity.y, movement.z); <------- se necesita un booleano para que esto no se efectue si estas haciendo un roll
     }
 
     private void LateUpdate()
     {
         Vector2 lookInput = playerInput.actions["Look"].ReadValue<Vector2>();
         followTarget.localEulerAngles += new Vector3(lookInput.y * lookSpeed * Time.deltaTime, 0, 0);
-        transform.eulerAngles += new Vector3(0, lookInput.x * lookSpeed * Time.deltaTime, 0);
+        transform.eulerAngles += new Vector3(0, lookInput.x * lookSpeed * Time.deltaTime, 0); // <----------- ESTO SE PONE CUANDO EL JUGADOR SE MUEVA, PARA QUE LA CAMARA NO LO GIRE
     }
 
     //- - - - - - COMANDOS DE STATS - - - - - -
@@ -125,6 +130,15 @@ public class CharacterController : MonoBehaviour
         if (callback.phase == InputActionPhase.Started)
         {
             Debug.Log("L");
+        }
+    }
+
+    //- - - - - - ROLL - - - - - -
+    public void Roll(InputAction.CallbackContext callback)
+    {
+        if (callback.phase == InputActionPhase.Started)
+        {
+            rb.AddForce(transform.forward * rollForce);
         }
     }
 }
