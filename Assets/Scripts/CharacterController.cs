@@ -34,8 +34,9 @@ public class CharacterController : MonoBehaviour
     private float lookSpeed;
 
     private PlayerInput playerInput;
-
+    private bool isRolling = false;
     private Rigidbody rb;
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -45,9 +46,12 @@ public class CharacterController : MonoBehaviour
 
     void Update()
     {
-        Vector2 leftStickInput = playerInput.actions["Move"].ReadValue<Vector2>();
-        Vector3 movement = ((transform.forward * leftStickInput.y) + (transform.right * leftStickInput.x)) * speed;
-        //rb.linearVelocity = new Vector3(movement.x, rb.linearVelocity.y, movement.z); <------- se necesita un booleano para que esto no se efectue si estas haciendo un roll
+        if (!isRolling)
+        {
+            Vector2 leftStickInput = playerInput.actions["Move"].ReadValue<Vector2>();
+            Vector3 movement = ((transform.forward * leftStickInput.y) + (transform.right * leftStickInput.x)) * speed;
+            rb.linearVelocity = new Vector3(movement.x, rb.linearVelocity.y, movement.z); //<-------se necesita un booleano para que esto no se efectue si estas haciendo un roll
+        }
     }
 
     private void LateUpdate()
@@ -65,13 +69,16 @@ public class CharacterController : MonoBehaviour
         switch (_stat)
         {
             case "life":
-                if (life - _quantity >= minLife)
+                if (!isRolling)
                 {
-                    life -= _quantity;
-                }
-                else
-                {
-                    life = minLife;
+                    if (life - _quantity >= minLife)
+                    {
+                        life -= _quantity;
+                    }
+                    else
+                    {
+                        life = minLife;
+                    }
                 }
                 break;
             case "speed":
@@ -138,7 +145,13 @@ public class CharacterController : MonoBehaviour
     {
         if (callback.phase == InputActionPhase.Started)
         {
+            isRolling = true; 
             rb.AddForce(transform.forward * rollForce);
         }
+    }
+
+    public void MoveAgainEvent()
+    {
+        isRolling = false;
     }
 }

@@ -481,7 +481,7 @@ MonoBehaviour:
   maxSpeed: 13
   minSpeed: 4
   speed: 7.5
-  rollForce: 100
+  rollForce: 350
   followTarget: {fileID: 1255880498}
   lookSpeed: 7.5
 --- !u!1 &577042592
