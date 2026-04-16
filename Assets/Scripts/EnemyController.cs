@@ -20,6 +20,8 @@ public class EnemyController : MonoBehaviour
     private float attackTimer;
     private bool Muerto;
     private bool playerDetected;
+    [SerializeField]
+    private GameObject sword;
 
     private CharacterController player;
     private LevelManager levelManager;
@@ -88,7 +90,8 @@ public class EnemyController : MonoBehaviour
     {
         if ((collision.gameObject.tag == "Player"))
         {
-            animator.SetTrigger("Detect");        
+            animator.SetTrigger("Detect");
+            sword.SetActive(true);
             //Invoke("StartMoving", animator.GetCurrentAnimatorStateInfo(0).length);
         }
     }
@@ -136,7 +139,7 @@ public class EnemyController : MonoBehaviour
         agent.Stop();
         agent.isStopped = true;
         Muerto = true;
-        //animator.SetTrigger("Death");
+        animator.SetTrigger("Death");
  
         GetComponent<Collider>().enabled = false;
         Destroy(gameObject, 2f);
