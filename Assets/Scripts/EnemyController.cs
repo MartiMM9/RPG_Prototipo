@@ -25,6 +25,7 @@ public class EnemyController : MonoBehaviour
 
     private CharacterController player;
     private LevelManager levelManager;
+ 
 
     void Start()
     {
@@ -92,7 +93,7 @@ public class EnemyController : MonoBehaviour
         {
             animator.SetTrigger("Detect");
             sword.SetActive(true);
-            //Invoke("StartMoving", animator.GetCurrentAnimatorStateInfo(0).length);
+            //Invoke("StartMoving", animator.GetCurrentAnimatorStateInfo(0).length);     
         }
     }
 
@@ -117,12 +118,12 @@ public class EnemyController : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            //collision.gameObject.GetComponent<CharacterController>().TakeDamage(damage);
+            collision.gameObject.GetComponent<CharacterController>().TakePlayerDamage(damage);
         }
     }
     public void TakeDamage(float _damage)
     {
-        Debug.Log("Recibe da�o");
+        Debug.Log("Recibe daño");
         animator.SetBool("Attack", false);
         animator.SetTrigger("Back");
 
