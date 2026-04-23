@@ -29,6 +29,8 @@ public class CharacterController : MonoBehaviour
     private float minAttack;
     [SerializeField]
     private float attack;
+    public float smallAttack;
+    public float heavyAttack;
 
     [Header("Arcane Stat")]
     [SerializeField]
@@ -45,7 +47,7 @@ public class CharacterController : MonoBehaviour
     [SerializeField]
     private GameObject hitbox;
 
-    private int attackPhase = 0;
+    public int attackPhase;
 
     [Header("Camera")]
     [SerializeField]
@@ -56,6 +58,7 @@ public class CharacterController : MonoBehaviour
     private PlayerInput playerInput;
     private bool isRolling = false;
     private Rigidbody rb;
+    public GameObject enemy;
 
     void Start()
     {
@@ -148,7 +151,7 @@ public class CharacterController : MonoBehaviour
     {
         if (callback.phase == InputActionPhase.Started)
         {
-            int attackPhase = 1;
+            attackPhase = 1;
             hitbox.SetActive(true);
             Debug.Log("W");
         }
@@ -158,9 +161,25 @@ public class CharacterController : MonoBehaviour
     {
         if (callback.phase == InputActionPhase.Started)
         {
-            int attackPhase = 2;
+            attackPhase = 2;
             hitbox.SetActive(true);
             Debug.Log("L");
+        }
+    }
+    private void OnTriggerEnter(Collider collision)
+    {
+        if (collision.gameObject.tag == "Enemy")
+        {
+            Debug.Log("Detecta enemigo " + attackPhase);
+
+            if (attackPhase == 1)
+            {
+                enemy.gameObject.GetComponent<EnemyController>().TakeDamage(smallAttack);
+            }
+            else if (attackPhase == 2)
+            {
+                enemy.gameObject.GetComponent<EnemyController>().TakeDamage(heavyAttack);
+            }
         }
     }
 
@@ -177,5 +196,10 @@ public class CharacterController : MonoBehaviour
     public void MoveAgainEvent()
     {
         isRolling = false;
+    }
+
+    public void TakePlayerDamage()
+    {
+
     }
 }
