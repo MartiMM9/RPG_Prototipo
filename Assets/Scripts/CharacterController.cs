@@ -22,10 +22,30 @@ public class CharacterController : MonoBehaviour
     [SerializeField]
     private float speed;
 
+    [Header("Attack Stat")]
+    [SerializeField]
+    private float maxAttack;
+    [SerializeField]
+    private float minAttack;
+    [SerializeField]
+    private float attack;
+
+    [Header("Arcane Stat")]
+    [SerializeField]
+    private float maxArcane;
+    [SerializeField]
+    private float minArcane;
+    [SerializeField]
+    private float arcane;
+
     [Header("OTHER")]
     [Header("Roll")]
     [SerializeField]
     private float rollForce;
+    [SerializeField]
+    private GameObject hitbox;
+
+    private int attackPhase = 0;
 
     [Header("Camera")]
     [SerializeField]
@@ -128,6 +148,8 @@ public class CharacterController : MonoBehaviour
     {
         if (callback.phase == InputActionPhase.Started)
         {
+            int attackPhase = 1;
+            hitbox.SetActive(true);
             Debug.Log("W");
         }
     }
@@ -136,6 +158,8 @@ public class CharacterController : MonoBehaviour
     {
         if (callback.phase == InputActionPhase.Started)
         {
+            int attackPhase = 2;
+            hitbox.SetActive(true);
             Debug.Log("L");
         }
     }
