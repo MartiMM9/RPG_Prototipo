@@ -59,12 +59,14 @@ public class CharacterController : MonoBehaviour
     private bool isRolling = false;
     private Rigidbody rb;
     public GameObject enemy;
+    private Animator animator;
 
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         rb = GetComponent<Rigidbody>();
         playerInput = GetComponent<PlayerInput>();
+        animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -198,8 +200,24 @@ public class CharacterController : MonoBehaviour
         isRolling = false;
     }
 
-    public void TakePlayerDamage()
+    public void TakePlayerDamage(float _daamage)
     {
+        Debug.Log("Recibe daño");
 
+        life -= _daamage;
+
+        if (life <= 0)
+        {
+            Die();
+        }
+        else
+        {
+            animator.SetTrigger("Hit");
+        }
+    }
+    private void Die()
+    {
+        animator.SetTrigger("Death");
+        GetComponent<Collider>().enabled = false;
     }
 }

@@ -118,7 +118,7 @@ public class EnemyController : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            //collision.gameObject.GetComponent<CharacterController>().TakeDamage(damage);
+            collision.gameObject.GetComponent<CharacterController>().TakePlayerDamage(damage);
         }
     }
     public void TakeDamage(float _damage)
