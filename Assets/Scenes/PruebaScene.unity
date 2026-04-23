@@ -157,6 +157,7 @@ MonoBehaviour:
   maxSpeed: 0
   minSpeed: 0
   speed: 0
+  rollForce: 0
   followTarget: {fileID: 0}
   lookSpeed: 0
 --- !u!136 &67928798
