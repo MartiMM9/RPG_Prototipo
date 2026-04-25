@@ -228,7 +228,18 @@
                 {
                     "name": "",
                     "id": "3f81c20e-c155-43f2-8433-881116f3ff82",
-                    "path": "",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "60f3d769-298a-4cce-810e-160ea079e039",
+                    "path": "<DualShock4GamepadAndroid>/buttonNorth",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -239,7 +250,18 @@
                 {
                     "name": "",
                     "id": "856e0ab1-8e12-4f7f-9373-a35c66f8a26f",
-                    "path": "",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rayo",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4afa39e4-eeea-4bc3-97c4-9abea60b5ef3",
+                    "path": "<DualShock4GamepadAndroid>/buttonWest",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
