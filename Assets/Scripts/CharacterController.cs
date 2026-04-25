@@ -55,6 +55,17 @@ public class CharacterController : MonoBehaviour
     [SerializeField]
     private float lookSpeed;
 
+    [Header("Rayo")]
+    [SerializeField] 
+    private GameObject rayoPrefab;
+    [SerializeField] 
+    private Transform spawnPoint;
+
+    [Header("Dash")]
+    [SerializeField] 
+    private float dashForce;
+    private bool isDashing = false;
+
     private PlayerInput playerInput;
     private bool isRolling = false;
     private Rigidbody rb;
@@ -71,7 +82,7 @@ public class CharacterController : MonoBehaviour
 
     void Update()
     {
-        if (!isRolling)
+        if (!isRolling && !isDashing)
         {
             Vector2 leftStickInput = playerInput.actions["Move"].ReadValue<Vector2>();
             Vector3 movement = ((transform.forward * leftStickInput.y) + (transform.right * leftStickInput.x)) * speed;
@@ -89,7 +100,7 @@ public class CharacterController : MonoBehaviour
     //- - - - - - COMANDOS DE STATS - - - - - -
     public void TakeStat(string _stat, float _quantity)
     {
-        // COMO USAR ESTA FUNCIÓN?
+        // COMO USAR ESTA FUNCIï¿½N?
         //Deberas poner TakeStat(XXX,YYY), donde pone 'XXX' deberas poner la stat que quieres cambiar, Ej: "speed", "life" y donde pone 'YYY' poner la cantidad que quitar
         switch (_stat)
         {
@@ -121,7 +132,7 @@ public class CharacterController : MonoBehaviour
 
     public void GainStat(string _stat, float _quantity)
     {
-        // COMO USAR ESTA FUNCIÓN?
+        // COMO USAR ESTA FUNCIï¿½N?
         //Deberas poner GainStat(XXX,YYY), donde pone 'XXX' deberas poner la stat que quieres cambiar, Ej: "speed", "life" y donde pone 'YYY' poner la cantidad que aumentar
         switch (_stat)
         {
@@ -146,6 +157,25 @@ public class CharacterController : MonoBehaviour
                 }
                 break;
         }
+    }
+
+    public void Dash(InputAction.CallbackContext callback)
+    {
+        if (callback.phase == InputActionPhase.Started && !isDashing)
+        {
+            isDashing = true;
+
+            rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
+            rb.AddForce(transform.forward * dashForce, ForceMode.Impulse);
+
+            animator.SetTrigger("Dash"); 
+            Invoke(nameof(FinDash), 0.3f); 
+        }
+    }
+
+    public void FinDash()
+    {
+        isDashing = false;
     }
 
     //- - - - - - COMANDOS DE ATAQUES - - - - - -
@@ -185,6 +215,14 @@ public class CharacterController : MonoBehaviour
         }
     }
 
+    public void RayoAttack(InputAction.CallbackContext callback)
+    {
+        if (callback.phase == InputActionPhase.Started)
+        {
+            GameObject rayo = Instantiate(rayoPrefab, spawnPoint.position, spawnPoint.rotation);
+        }
+    }
+
     //- - - - - - ROLL - - - - - -
     public void Roll(InputAction.CallbackContext callback)
     {
@@ -202,7 +240,7 @@ public class CharacterController : MonoBehaviour
 
     public void TakePlayerDamage(float _daamage)
     {
-        Debug.Log("Recibe daño");
+        Debug.Log("Recibe daï¿½o");
 
         life -= _daamage;
 
