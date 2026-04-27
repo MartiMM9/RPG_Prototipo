@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.U2D;
 
-public class CharacterController : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     [Header("STATS")]
     [Header("Life Stat")]
@@ -27,10 +27,7 @@ public class CharacterController : MonoBehaviour
     private float maxAttack;
     [SerializeField]
     private float minAttack;
-    [SerializeField]
-    private float attack;
-    public float smallAttack;
-    public float heavyAttack;
+    public float attack;
 
     [Header("Arcane Stat")]
     [SerializeField]
@@ -56,13 +53,13 @@ public class CharacterController : MonoBehaviour
     private float lookSpeed;
 
     [Header("Rayo")]
-    [SerializeField] 
+    [SerializeField]
     private GameObject rayoPrefab;
-    [SerializeField] 
+    [SerializeField]
     private Transform spawnPoint;
 
     [Header("Dash")]
-    [SerializeField] 
+    [SerializeField]
     private float dashForce;
     private bool isDashing = false;
 
@@ -132,14 +129,14 @@ public class CharacterController : MonoBehaviour
 
     public void GainStat(string _stat, float _quantity)
     {
-        // COMO USAR ESTA FUNCI�N?
+        // COMO USAR ESTA FUNCION?
         //Deberas poner GainStat(XXX,YYY), donde pone 'XXX' deberas poner la stat que quieres cambiar, Ej: "speed", "life" y donde pone 'YYY' poner la cantidad que aumentar
         switch (_stat)
         {
             case "life":
                 if (life + _quantity <= maxLife)
                 {
-                    life += maxLife;
+                    life += _quantity;
                 }
                 else
                 {
@@ -149,7 +146,7 @@ public class CharacterController : MonoBehaviour
             case "speed":
                 if (speed + _quantity <= maxSpeed)
                 {
-                    speed += maxSpeed;
+                    speed += _quantity;
                 }
                 else
                 {
@@ -168,8 +165,8 @@ public class CharacterController : MonoBehaviour
             rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
             rb.AddForce(transform.forward * dashForce, ForceMode.Impulse);
 
-            animator.SetTrigger("Dash"); 
-            Invoke(nameof(FinDash), 0.3f); 
+            animator.SetTrigger("Dash");
+            Invoke(nameof(FinDash), 0.3f);
         }
     }
 
@@ -204,13 +201,15 @@ public class CharacterController : MonoBehaviour
         {
             Debug.Log("Detecta enemigo " + attackPhase);
 
+            float weaponDamage = 1; // ESTO ES PARA PROBAR AHORA PERO EN EL FUTURO TENDRA QUE PILLAR EL STAT DE FUERZA REAL DE LA ARMA QUE LLEVE EL PLAYER
+
             if (attackPhase == 1)
             {
-                enemy.gameObject.GetComponent<EnemyController>().TakeDamage(smallAttack);
+                enemy.gameObject.GetComponent<EnemyController>().TakeDamage( weaponDamage * 2 + attack * 1.3f ); //(formula de) Ataque 'flojo'
             }
             else if (attackPhase == 2)
             {
-                enemy.gameObject.GetComponent<EnemyController>().TakeDamage(heavyAttack);
+                enemy.gameObject.GetComponent<EnemyController>().TakeDamage( (weaponDamage * 2 + attack * 1.3f) * 1.3f ); //(formula de) Ataque 'fuerte'
             }
         }
     }
@@ -228,7 +227,7 @@ public class CharacterController : MonoBehaviour
     {
         if (callback.phase == InputActionPhase.Started)
         {
-            isRolling = true; 
+            isRolling = true;
             rb.AddForce(transform.forward * rollForce);
         }
     }
@@ -240,7 +239,6 @@ public class CharacterController : MonoBehaviour
 
     public void TakePlayerDamage(float _daamage)
     {
-        Debug.Log("Recibe da�o");
 
         life -= _daamage;
 

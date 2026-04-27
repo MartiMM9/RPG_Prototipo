@@ -820,7 +820,7 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 2
   m_Height: 1
@@ -897,6 +897,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7793113809871023128, guid: bf7efc9a29ecfc24ab015179380f243f, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -912,7 +916,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3570597767577349336, guid: bf7efc9a29ecfc24ab015179380f243f, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1936207169}
+      addedObject: {fileID: 1936207174}
     - targetCorrespondingSourceObject: {fileID: 3570597767577349336, guid: bf7efc9a29ecfc24ab015179380f243f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1936207168}
@@ -925,9 +929,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3570597767577349336, guid: bf7efc9a29ecfc24ab015179380f243f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1936207171}
-    - targetCorrespondingSourceObject: {fileID: 3570597767577349336, guid: bf7efc9a29ecfc24ab015179380f243f, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1936207172}
   m_SourcePrefab: {fileID: 100100000, guid: bf7efc9a29ecfc24ab015179380f243f, type: 3}
 --- !u!1 &1936207164 stripped
 GameObject:
@@ -1024,8 +1025,8 @@ MonoBehaviour:
     m_ActionName: 'PlayerActions/Look[/Mouse/delta]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CharacterController, Assembly-CSharp
+      - m_Target: {fileID: 1936207174}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: WeakAttack
         m_Mode: 0
         m_Arguments:
@@ -1040,8 +1041,8 @@ MonoBehaviour:
     m_ActionName: 'PlayerActions/WeakAttack[/Mouse/leftButton]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CharacterController, Assembly-CSharp
+      - m_Target: {fileID: 1936207174}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: HeavyAttack
         m_Mode: 0
         m_Arguments:
@@ -1056,8 +1057,8 @@ MonoBehaviour:
     m_ActionName: 'PlayerActions/HeavyAttack[/Mouse/rightButton]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: CharacterController, Assembly-CSharp
+      - m_Target: {fileID: 1936207174}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
         m_MethodName: Roll
         m_Mode: 0
         m_Arguments:
@@ -1083,41 +1084,6 @@ MonoBehaviour:
   m_DefaultActionMap: PlayerActions
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &1936207169
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1936207164}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e02bbd3047cb094487413caa2d45bae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CharacterController
-  life: 100
-  maxLife: 100
-  minLife: 0
-  maxSpeed: 13
-  minSpeed: 4
-  speed: 7.5
-  maxAttack: 0
-  minAttack: 0
-  attack: 0
-  smallAttack: 15
-  heavyAttack: 30
-  maxArcane: 0
-  minArcane: 0
-  arcane: 0
-  rollForce: 350
-  hitbox: {fileID: 1476189499}
-  attackPhase: 0
-  followTarget: {fileID: 7598623231404878405}
-  lookSpeed: 7.5
-  rayoPrefab: {fileID: 1683002498519657817, guid: 466139e32f883764794cbd0bdf98dabb, type: 3}
-  spawnPoint: {fileID: 225245449}
-  dashForce: 10
-  enemy: {fileID: 1467328789}
 --- !u!195 &1936207171
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1140,7 +1106,7 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &1936207172
+--- !u!114 &1936207174
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1149,11 +1115,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 1936207164}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16f42fa37fd614b46b69445d57eded46, type: 3}
+  m_Script: {fileID: 11500000, guid: 53fca7b3ab4806342baa41df85f2f09d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RayController
-  speed: 10
-  damage: 20
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterController
+  life: 100
+  maxLife: 100
+  minLife: 0
+  maxSpeed: 13
+  minSpeed: 4
+  speed: 7.5
+  maxAttack: 15
+  minAttack: 1
+  attack: 7
+  maxArcane: 0
+  minArcane: 0
+  arcane: 0
+  rollForce: 350
+  hitbox: {fileID: 1476189499}
+  attackPhase: 0
+  followTarget: {fileID: 7598623231404878405}
+  lookSpeed: 7.5
+  rayoPrefab: {fileID: 1683002498519657817, guid: 466139e32f883764794cbd0bdf98dabb, type: 3}
+  spawnPoint: {fileID: 225245449}
+  dashForce: 10
+  enemy: {fileID: 1467328789}
 --- !u!20 &273007338402591639
 Camera:
   m_ObjectHideFlags: 0

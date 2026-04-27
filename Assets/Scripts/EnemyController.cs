@@ -23,7 +23,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField]
     private GameObject sword;
 
-    private CharacterController player;
+    private PlayerController player;
     private LevelManager levelManager;
  
 
@@ -33,7 +33,7 @@ public class EnemyController : MonoBehaviour
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         targetPlayer = GameObject.FindGameObjectWithTag("Player").transform;
 
-        player = FindObjectOfType<CharacterController>();
+        player = FindObjectOfType<PlayerController>();
         levelManager = FindObjectOfType<LevelManager>();
     }
 
@@ -118,7 +118,7 @@ public class EnemyController : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            collision.gameObject.GetComponent<CharacterController>().TakePlayerDamage(damage);
+            collision.gameObject.GetComponent<PlayerController>().TakePlayerDamage(damage);
         }
     }
     public void TakeDamage(float _damage)

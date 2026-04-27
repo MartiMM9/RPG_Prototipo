@@ -7,11 +7,11 @@ public class Potion : MonoBehaviour
     [SerializeField]
     private float quantity;
     [SerializeField]
-    private CharacterController player;
+    private PlayerController player;
 
     private void Awake()
     {
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterController>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
     }
 
     private void Consume()
