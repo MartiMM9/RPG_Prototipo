@@ -75,6 +75,8 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         playerInput = GetComponent<PlayerInput>();
         animator = GetComponent<Animator>();
+
+        animator.applyRootMotion = false; //Al iniciar, el animator no debe aplicar Root Motion, para que se pueda mover al estar en Idle
     }
 
     void Update()
@@ -84,6 +86,10 @@ public class PlayerController : MonoBehaviour
             Vector2 leftStickInput = playerInput.actions["Move"].ReadValue<Vector2>();
             Vector3 movement = ((transform.forward * leftStickInput.y) + (transform.right * leftStickInput.x)) * speed;
             rb.linearVelocity = new Vector3(movement.x, rb.linearVelocity.y, movement.z); //<-------se necesita un booleano para que esto no se efectue si estas haciendo un roll
+
+            //- - - - - - ANIMACIONES - - - - - -
+            animator.SetFloat("X", leftStickInput.x);
+            animator.SetFloat("Y", leftStickInput.y);
         }
     }
 
@@ -165,7 +171,7 @@ public class PlayerController : MonoBehaviour
             rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
             rb.AddForce(transform.forward * dashForce, ForceMode.Impulse);
 
-            animator.SetTrigger("Dash");
+            animator.SetBool("isDashing", true);
             Invoke(nameof(FinDash), 0.3f);
         }
     }
@@ -173,6 +179,7 @@ public class PlayerController : MonoBehaviour
     public void FinDash()
     {
         isDashing = false;
+        animator.SetBool("isDashing", false);
     }
 
     //- - - - - - COMANDOS DE ATAQUES - - - - - -
@@ -183,6 +190,10 @@ public class PlayerController : MonoBehaviour
             attackPhase = 1;
             hitbox.SetActive(true);
             Debug.Log("W");
+
+            //- - - - - - ANIMACION - - - - - -
+            animator.applyRootMotion = true;
+            animator.SetTrigger("LightAttack");
         }
     }
 
@@ -193,6 +204,10 @@ public class PlayerController : MonoBehaviour
             attackPhase = 2;
             hitbox.SetActive(true);
             Debug.Log("L");
+
+            //- - - - - - ANIMACION - - - - - -
+            animator.applyRootMotion = true;
+            animator.SetTrigger("HeavyAttack");
         }
     }
     private void OnTriggerEnter(Collider collision)
@@ -229,12 +244,16 @@ public class PlayerController : MonoBehaviour
         {
             isRolling = true;
             rb.AddForce(transform.forward * rollForce);
+
+            animator.SetTrigger("Roll");
         }
     }
 
     public void MoveAgainEvent()
     {
         isRolling = false;
+
+        animator.applyRootMotion = false; //Desactiva el Root Motion al terminar las animaciones de ataque
     }
 
     public void TakePlayerDamage(float _daamage)
