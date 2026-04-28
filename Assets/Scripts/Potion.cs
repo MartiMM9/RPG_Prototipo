@@ -18,4 +18,13 @@ public class Potion : MonoBehaviour
     {
         player.GainStat(type,quantity);
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            Consume();
+            Destroy(gameObject);
+        }
+    }
 }

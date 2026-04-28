@@ -5,6 +5,10 @@ using UnityEngine.U2D;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Weapon")]
+    [SerializeField]
+    private Weapons weapon;
+
     [Header("STATS")]
     [Header("Life Stat")]
     [SerializeField]
@@ -215,8 +219,11 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.tag == "Enemy")
         {
             Debug.Log("Detecta enemigo " + attackPhase);
-
-            float weaponDamage = 1; // ESTO ES PARA PROBAR AHORA PERO EN EL FUTURO TENDRA QUE PILLAR EL STAT DE FUERZA REAL DE LA ARMA QUE LLEVE EL PLAYER
+            float weaponDamage = 1;
+            if (weapon != null)
+            {
+                weaponDamage = weapon.damage;
+            }
 
             if (attackPhase == 1)
             {
