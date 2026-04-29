@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Weapon")]
     [SerializeField]
-    private Weapons weapon;
+    private Weapons mainWeapon;
 
     [Header("STATS")]
     [Header("Life Stat")]
@@ -42,6 +42,11 @@ public class PlayerController : MonoBehaviour
     private float arcane;
 
     [Header("OTHER")]
+    [Header("Technical")]
+    [SerializeField]
+    private Transform hand;
+    private bool armed;
+
     [Header("Roll")]
     [SerializeField]
     private float rollForce;
@@ -94,6 +99,12 @@ public class PlayerController : MonoBehaviour
             //- - - - - - ANIMACIONES - - - - - -
             animator.SetFloat("X", leftStickInput.x);
             animator.SetFloat("Y", leftStickInput.y);
+        }
+        if (mainWeapon != null && armed == false)
+        {
+            GameObject currentWeapon = Instantiate(mainWeapon.prefabMesh, hand.position, hand.rotation);
+            currentWeapon.transform.parent = hand;
+            armed = true;
         }
     }
 
@@ -220,9 +231,9 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("Detecta enemigo " + attackPhase);
             float weaponDamage = 1;
-            if (weapon != null)
+            if (mainWeapon != null)
             {
-                weaponDamage = weapon.damage;
+                weaponDamage = mainWeapon.damage;
             }
 
             if (attackPhase == 1)
