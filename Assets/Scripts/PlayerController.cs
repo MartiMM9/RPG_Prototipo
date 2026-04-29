@@ -2,6 +2,7 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.U2D;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -77,6 +78,8 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     public GameObject enemy;
     private Animator animator;
+    [SerializeField]
+    private Image lifeBar;
 
     void Start()
     {
@@ -86,6 +89,7 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
 
         animator.applyRootMotion = false; //Al iniciar, el animator no debe aplicar Root Motion, para que se pueda mover al estar en Idle
+        
     }
 
     void Update()
@@ -106,6 +110,7 @@ public class PlayerController : MonoBehaviour
             currentWeapon.transform.parent = hand;
             armed = true;
         }
+        UpdateLife();
     }
 
     private void LateUpdate()
@@ -251,6 +256,7 @@ public class PlayerController : MonoBehaviour
     {
         if (callback.phase == InputActionPhase.Started)
         {
+            Debug.Log("Instanciar rayo");
             GameObject rayo = Instantiate(rayoPrefab, spawnPoint.position, spawnPoint.rotation);
         }
     }
@@ -292,5 +298,10 @@ public class PlayerController : MonoBehaviour
     {
         animator.SetTrigger("Death");
         GetComponent<Collider>().enabled = false;
+    }
+
+    public void UpdateLife()
+    {
+        lifeBar.fillAmount = life / maxLife;
     }
 }
