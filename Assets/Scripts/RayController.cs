@@ -17,8 +17,7 @@ public class RayController : MonoBehaviour
         if (other.CompareTag("Enemy"))
         {
             other.GetComponent<EnemyController>().TakeDamage(damage);
-        }
-
-        Destroy(gameObject);
+            Destroy(gameObject);
+        }    
     }
 }
