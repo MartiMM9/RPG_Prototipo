@@ -58,6 +58,28 @@ public class LevelManager : MonoBehaviour
             player.GainStat(items[i].thisPotion.type, items[i].thisPotion.quantity);
             items[i].quantity--;
         }
+        if (items[i].quantity <= 0)
+        {
+            items.RemoveAt(i);
+        }
+    }
+
+    public void AddItem(string name, Sprite sprite, int quantity, Potion potion)
+    {
+        for (int i = 0; i < items.Count; i++)
+        {
+            if (items[i].itemName == name)
+            {
+                items[i].quantity += quantity;
+                return;
+            }
+        }
+        ItemManager newItem = new ItemManager();
+        newItem.itemName = name;
+        newItem.itemSprite = sprite;
+        newItem.quantity = quantity;
+        newItem.thisPotion = potion;
+        items.Add(newItem);
     }
 }
 

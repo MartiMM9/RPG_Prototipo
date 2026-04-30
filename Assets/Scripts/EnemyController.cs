@@ -6,6 +6,10 @@ public class EnemyController : MonoBehaviour
     private Animator animator;
     private UnityEngine.AI.NavMeshAgent agent;
 
+    /*[SerializeField]
+    private Vector3 spawn = new Vector3(-6.5f, -0.001f, 0.9f);*/
+    [SerializeField]
+    private GameObject prefab;
     [SerializeField]
     private float speed;
     [SerializeField]
@@ -29,6 +33,8 @@ public class EnemyController : MonoBehaviour
 
     void Start()
     {
+        life = 100f;
+        gameObject.GetComponent<Collider>().enabled = true;
         animator = GetComponent<Animator>();
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         targetPlayer = GameObject.FindGameObjectWithTag("Player").transform;
@@ -143,6 +149,7 @@ public class EnemyController : MonoBehaviour
         animator.SetTrigger("Death");
  
         GetComponent<Collider>().enabled = false;
+        Instantiate(prefab, Vector3.zero, Quaternion.identity);
         Destroy(gameObject, 2f);
     }
 }

@@ -47,6 +47,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Transform hand;
     private bool armed;
+    [SerializeField]
+    private bool isMouse;
+    [SerializeField]
+    private GameObject menu;
 
     [Header("Roll")]
     [SerializeField]
@@ -83,7 +87,10 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        if (!isMouse)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
         rb = GetComponent<Rigidbody>();
         playerInput = GetComponent<PlayerInput>();
         animator = GetComponent<Animator>();
@@ -120,6 +127,22 @@ public class PlayerController : MonoBehaviour
         transform.eulerAngles += new Vector3(0, lookInput.x * lookSpeed * Time.deltaTime, 0); // <----------- ESTO SE PONE CUANDO EL JUGADOR SE MUEVA, PARA QUE LA CAMARA NO LO GIRE
     }
 
+    public void ToggleMenu(InputAction.CallbackContext callback)
+    {
+        if (callback.phase == InputActionPhase.Started)
+        {
+            menu.SetActive(!menu.activeSelf);
+            if (menu.activeSelf)
+            {
+                Cursor.lockState = CursorLockMode.None;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+        }
+    }
+
     //- - - - - - COMANDOS DE STATS - - - - - -
     public void TakeStat(string _stat, float _quantity)
     {
@@ -150,6 +173,19 @@ public class PlayerController : MonoBehaviour
                     speed = minSpeed;
                 }
                 break;
+            case "dmg":
+                if (!isRolling)
+                {
+                    if (attack - _quantity >= minAttack)
+                    {
+                        attack -= _quantity;
+                    }
+                    else
+                    {
+                        attack = minAttack;
+                    }
+                }
+                break;
         }
     }
 
@@ -177,6 +213,16 @@ public class PlayerController : MonoBehaviour
                 else
                 {
                     speed = maxSpeed;
+                }
+                break;
+            case "dmg":
+                if (attack + _quantity <= maxAttack)
+                {
+                    attack += _quantity;
+                }
+                else
+                {
+                    attack = maxAttack;
                 }
                 break;
         }
@@ -235,6 +281,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.tag == "Enemy")
         {
             Debug.Log("Detecta enemigo " + attackPhase);
+            enemy = collision.gameObject;
             float weaponDamage = 1;
             if (mainWeapon != null)
             {
@@ -243,12 +290,16 @@ public class PlayerController : MonoBehaviour
 
             if (attackPhase == 1)
             {
-                enemy.gameObject.GetComponent<EnemyController>().TakeDamage( weaponDamage * 2 + attack * 1.3f ); //(formula de) Ataque 'flojo'
+                enemy.gameObject.GetComponent<EnemyController>().TakeDamage(weaponDamage * 2 + attack * 1.3f); //(formula de) Ataque 'flojo'
             }
             else if (attackPhase == 2)
             {
-                enemy.gameObject.GetComponent<EnemyController>().TakeDamage( (weaponDamage * 2 + attack * 1.3f) * 1.3f ); //(formula de) Ataque 'fuerte'
+                enemy.gameObject.GetComponent<EnemyController>().TakeDamage((weaponDamage * 2 + attack * 1.3f) * 1.3f); //(formula de) Ataque 'fuerte'
             }
+        }
+        if (collision.gameObject.tag == "Hurt")
+        {
+            TakePlayerDamage(10);
         }
     }
 
@@ -303,5 +354,10 @@ public class PlayerController : MonoBehaviour
     public void UpdateLife()
     {
         lifeBar.fillAmount = life / maxLife;
+    }
+
+    public void stopHitbox()
+    {
+        hitbox.SetActive(false);
     }
 }

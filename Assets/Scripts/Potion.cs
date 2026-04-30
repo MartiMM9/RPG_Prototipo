@@ -6,6 +6,10 @@ public class Potion : MonoBehaviour
     public float quantity;
     [SerializeField]
     private PlayerController player;
+    [SerializeField]
+    private LevelManager lm;
+    [SerializeField]
+    private Sprite sprite;
 
     private void Consume()
     {
@@ -16,7 +20,7 @@ public class Potion : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Consume();
+            lm.AddItem(type, sprite, 1, this);
             Destroy(gameObject);
         }
     }

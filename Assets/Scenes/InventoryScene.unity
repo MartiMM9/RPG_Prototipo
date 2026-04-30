@@ -2736,6 +2736,7 @@ MonoBehaviour:
   minArcane: 0
   arcane: 0
   hand: {fileID: 2003514208}
+  isMouse: 1
   rollForce: 350
   hitbox: {fileID: 1968148751}
   attackPhase: 0
@@ -2745,6 +2746,7 @@ MonoBehaviour:
   spawnPoint: {fileID: 238129908}
   dashForce: 10
   enemy: {fileID: 0}
+  lifeBar: {fileID: 0}
 --- !u!4 &934437945 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4235247789802550882, guid: bf7efc9a29ecfc24ab015179380f243f, type: 3}
